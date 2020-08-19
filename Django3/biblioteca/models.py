@@ -22,7 +22,7 @@ class Material(models.Model):
     titulo = models.CharField(max_length=50)
     año = models.IntegerField()
     status = models.CharField(max_length=50)
-    prestamo = models.ForeignKey('Prestamo', on_delete=models.CASCADE, null=False)
+    prestamo = models.ForeignKey('Prestamo', on_delete=models.CASCADE, null = False)
 
     def altaMaterial():
         pass
@@ -56,6 +56,7 @@ class Persona(models.Model):
 class Libro(Material):
 
     editorial = models.CharField(max_length=50)
+    portada = models.FileField(blank = True)
 
     def __str__(self):
         return str(Material.titulo) 
