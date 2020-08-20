@@ -35,15 +35,16 @@ class Material(models.Model):
         return str(self.tipoMaterial)
 
 class Persona(models.Model):
-
-    tipoPersona = models.CharField(max_length=50)
-    nombre = models.CharField(max_length=50)
-    apellido = models.CharField(max_length=50)
-    correo = models.CharField(max_length=50)
+    
+    prestamo = models.OneToOneField('Prestamo', on_delete = models.CASCADE, null = False)
+    tipoPersona = models.CharField(max_length = 100)
+    nombre = models.CharField(max_length = 30)
+    apellido = models.CharField(max_length = 30)
     telefono = models.IntegerField()
+    correo = models.CharField(max_length = 30)
     numLibros = models.IntegerField()
     adeudo = models.FloatField()
-    prestamo = models.OneToOneField('Prestamo', on_delete = models.CASCADE, null = False)
+    
     
     def llevarMaterial():
         pass
@@ -59,23 +60,23 @@ class Libro(Material):
     portada = models.FileField(blank = True)
 
     def __str__(self):
-        return str(Material.titulo) 
+        return str(self.titulo) 
 
 class Revista(Material):
 
     def __str__(self):
-        return str(Material.titulo) 
+        return str(self.titulo) 
 
 class Profesor(Persona):
     
     numEmpleado = models.AutoField(primary_key=True)
 
     def __str__(self):
-        return str(Persona.nombre)
+        return str(self.nombre)
 
 class Alumno(Persona):
     
     matricula = models.AutoField(primary_key=True)
 
     def __str__(self):
-        return str(Persona.nombre)
+        return str(self.nombre)

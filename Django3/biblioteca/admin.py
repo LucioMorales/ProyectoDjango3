@@ -4,39 +4,41 @@ from .models import *
 # Register your models here.
 
 class MaterialAdmin(admin.ModelAdmin):
-    list_display = ['tipoMaterial','codigo','autor','titulo','año','status',]
-    list_display_links = ['tipoMaterial','codigo','autor','titulo','año','status',]
-    search_fields = ['tipoMaterial','codigo','autor','titulo','año','status',]
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
 
-class MaterialInline(admin.StackedInline):
-    model = Material
-    extra = 0
-    fields = ['tipoMaterial','autor','titulo','año','status',]
 
 class PersonaAdmin(admin.ModelAdmin):
-    fieldsets = (
-        ('Descripcion', {
-          'fields': ('tipoPersona','nombre','apellido')  
-        }),
-        ('Datos', {
-            'fields': ('correo','telefono',)
-        }),
-        ('Extra', {
-          'fields': ('numLibros','adeudo',)  
-        }),
-    )
-    list_display = ['tipoPersona','nombre','apellido','correo','telefono','numLibros','adeudo',]
-    list_display_links = ['tipoPersona','nombre','apellido','correo','telefono','numLibros','adeudo',]
-    search_fields = ['tipoPersona','nombre','apellido','correo','telefono','numLibros','adeudo',]
+    def get_model_perms(self, request):
+        """
+        Return empty perms dict thus hiding the model from admin index.
+        """
+        return {}
 
-class PersonaInline(admin.StackedInline):
-    model = Material
+class AlumnoInline(admin.StackedInline):
+    model = Alumno
     extra = 0
-    fields = ['tipoPersona','nombre','apellido','correo','telefono','numLibros','adeudo',]
+
+class ProfesorInline(admin.StackedInline):
+    model = Profesor
+    extra = 0
+    
+class LibroInline(admin.StackedInline):
+    model = Libro
+    extra = 0
+
+class RevistaInline(admin.StackedInline):
+    model = Revista
+    extra = 0
 
 class PrestamoAdmin(admin.ModelAdmin):
-
-    inlines = [MaterialInline]
+    list_display = ['codigo','fechaSalida','fechaRegreso']
+    list_display_links = ('codigo','fechaSalida', 'fechaRegreso')
+    search_fields = ('codigo','fechaSalida', 'fechaRegreso')
+    inlines = [AlumnoInline,ProfesorInline,LibroInline,RevistaInline]
 
 class ProfesorAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -76,12 +78,12 @@ class LibroAdmin(admin.ModelAdmin):
           'fields': ('tipoMaterial','autor','titulo','portada',)  
         }),
         ('Extra', {
-            'fields': ('año','status','editorial')
+            'fields': ('año','status','editorial','prestamo',)
         }),
     )
-    list_display = ['tipoMaterial','codigo','autor','titulo','año','status','editorial',]
-    list_display_links = ['tipoMaterial','codigo','autor','titulo','año','status','editorial',]
-    search_fields = ['tipoMaterial','codigo','autor','titulo','año','status','editorial',]
+    list_display = ['tipoMaterial','autor','titulo','año','status','prestamo','editorial',]
+    list_display_links = ['tipoMaterial','autor','titulo','año','status','prestamo','editorial',]
+    search_fields = ['tipoMaterial','autor','titulo','año','status','prestamo','editorial',]
 
 class RevistaAdmin(admin.ModelAdmin):
     fieldsets = (
@@ -92,9 +94,9 @@ class RevistaAdmin(admin.ModelAdmin):
             'fields': ('año','status',)
         }),
     )
-    list_display = ['tipoMaterial','autor','titulo','año','status',]
-    list_display_links = ['tipoMaterial','autor','titulo','año','status',]
-    search_fields = ['tipoMaterial','autor','titulo','año','status',]
+    list_display = ['tipoMaterial','autor','titulo','año','status','prestamo']
+    list_display_links = ['tipoMaterial','autor','titulo','año','status','prestamo']
+    search_fields = ['tipoMaterial','autor','titulo','año','status','prestamo']
 
 admin.site.register(Prestamo, PrestamoAdmin)
 admin.site.register(Persona, PersonaAdmin)
